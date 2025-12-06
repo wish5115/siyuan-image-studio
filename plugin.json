@@ -1,0 +1,17 @@
+{
+    "name": "siyuan-image-studio",
+    "version": "v0.0.1",
+    "author": "Wilson",
+    "url": "https://github.com/wish5115/siyuan-image-studio",
+    "displayName": {
+        "default": "SiYuan Image Studio",
+        "zh_CN": "思源图片编辑器"
+    },
+    "description": {
+        "default": "A simple image editor for SiYuan Notes, allowing basic annotations, doodling, cropping, flipping, and more.",
+        "zh_CN": "可对思源笔记图片进行简单的标注，涂鸦、裁剪、翻转等操作。"
+    },
+    "readme": {
+        "default": "README.md"
+    }
+}
