@@ -12,6 +12,7 @@
         "zh_CN": "可对思源笔记图片进行简单的标注，涂鸦、裁剪、翻转等操作。"
     },
     "readme": {
-        "default": "README.md"
+        "default": "README.md",
+        "zh_CN": "README-zh.md"
     }
 }
