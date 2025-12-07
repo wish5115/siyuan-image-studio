@@ -1,16 +1,16 @@
 {
     "name": "siyuan-image-studio",
+    "author": "Wilson",
+    "url": "https://github.com/wish5115/siyuan-image-studio",
     "version": "0.0.1",
     "minAppVersion": "3.0.12",
-    "disabledInPublish": false,
+    "disabledInPublish": true,
     "backends": [
         "all"
     ],
     "frontends": [
         "all"
     ],
-    "author": "Wilson",
-    "url": "https://github.com/wish5115/siyuan-image-studio",
     "displayName": {
         "default": "SiYuan Image Studio",
         "zh_CN": "思源图片编辑器"
