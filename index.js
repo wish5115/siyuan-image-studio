@@ -204,7 +204,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             .vip-popup-content {
                 background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
                 color: #ffffff;
-                padding: 30px;
+                padding: 15px;
                 border-radius: 16px;
                 max-width: min(600px, 100%);
                 margin: 0 auto;

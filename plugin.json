@@ -1,6 +1,14 @@
 {
     "name": "siyuan-image-studio",
-    "version": "v0.0.1",
+    "version": "0.0.1",
+    "minAppVersion": "3.0.12",
+    "disabledInPublish": false,
+    "backends": [
+        "all"
+    ],
+    "frontends": [
+        "all"
+    ],
     "author": "Wilson",
     "url": "https://github.com/wish5115/siyuan-image-studio",
     "displayName": {
@@ -14,5 +22,11 @@
     "readme": {
         "default": "README.md",
         "zh_CN": "README-zh.md"
+    },
+    "keywords": ["图片编辑","裁剪","翻转","标注","涂鸦","Image editor","Crop","Flip","Annotation","Doodle"],
+    "funding": {
+        "custom": [
+            "https://b3logfile.com/file/2025/06/image-fEA9BRv.png?imageView2/2/interlace/1/format/webp"
+        ]
     }
 }
