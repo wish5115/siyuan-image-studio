@@ -38,8 +38,9 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         document.querySelectorAll(`script[data-plugin="${this.name}"]`).forEach(s => s.remove());
     }
 
-    uninstall() {
-        
+    async uninstall() {
+        // 删除配置文件
+        await this.removeData(STORAGE_NAME);
     }
     loadImageStudio(src) {
         src = src || `/plugins/${this.name}/libs/siyuan-image-studio${isDebug ? '-origin' : ''}.js`;
