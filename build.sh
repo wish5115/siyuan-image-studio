@@ -31,6 +31,7 @@ rm -rf "$TEMP_DIR/.idea"
 rm -f  "$TEMP_DIR/.DS_Store"
 rm -rf "$TEMP_DIR/node_modules"
 rm -f  "$TEMP_DIR/build.sh"
+rm -f  "$TEMP_DIR/build.bat"
 rm -f  "$TEMP_DIR/.hotreload"
 
 # 清理 libs/ 中的 -origin 文件
