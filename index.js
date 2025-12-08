@@ -12,6 +12,8 @@ const defaultConfig = {
 
 // true 调试 false 生产
 const isDebug = false;
+// 当前版本
+const version = '0.0.2';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -43,7 +45,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         await this.removeData(STORAGE_NAME);
     }
     loadImageStudio(src) {
-        src = src || `/plugins/${this.name}/libs/siyuan-image-studio${isDebug ? '-origin' : ''}.js`;
+        src = src || `/plugins/${this.name}/libs/siyuan-image-studio${isDebug ? '-origin' : ''}.js?v=${version}`;
         return new Promise((resolve, reject) => {
             // 检查是否已加载
             if (document.querySelector(`script[src="${src}"]`)) {
