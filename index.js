@@ -152,7 +152,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                     vipKeyVerifyButton.addEventListener("click", async () => {
                         const verification = await this.verifyVipKey(vipKey.value.trim());
                         if (!verification?.success) {
-                            alert(verification.message || this.t("VIP key verification failed!"));
+                            if(showAlert) showAlert(verification.message || this.t("VIP key verification failed!"));
                             // this.data[STORAGE_NAME].isVip = false;
                             // await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
                             // ImageStudio.updateData(this.data[STORAGE_NAME]);
@@ -161,7 +161,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                         // this.data[STORAGE_NAME].vipKey = vipKey.value.trim();
                         // this.data[STORAGE_NAME].isVip = true;
                         // await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
-                        alert(this.t("VIP key verified successfully!"));
+                        if(showAlert) showAlert(this.t("VIP key verified successfully!"));
                     });
                     vipKeyContainer.appendChild(vipKeyVerifyButton);
                     // 购买按钮
