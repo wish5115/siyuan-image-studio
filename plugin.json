@@ -2,7 +2,7 @@
     "name": "siyuan-image-studio",
     "author": "Wilson",
     "url": "https://github.com/wish5115/siyuan-image-studio",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "minAppVersion": "3.0.12",
     "disabledInPublish": true,
     "backends": [
@@ -21,7 +21,7 @@
     },
     "readme": {
         "default": "README.md",
-        "zh_CN": "README-zh.md"
+        "zh_CN": "README_zh_CN.md"
     },
     "keywords": [],
     "funding": {
