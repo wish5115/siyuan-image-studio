@@ -8,6 +8,11 @@ const defaultConfig = {
     isCompression: true,
     vipKey: "",
     isVip: false,
+    currentColor: '#ff0000', // 画笔颜色
+    currentSize: 2, // 画笔粗细
+    currentFontWeight: 'normal', // 字体粗细
+    currentFontStroke: 'none', // 字体描边
+    recentColors: [], // 最近使用的颜色
 };
 
 // true 调试 false 生产
@@ -26,6 +31,11 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             vipKey: this.data[STORAGE_NAME].vipKey,
             isVip: this.data[STORAGE_NAME].isVip,
             isCompression: this.data[STORAGE_NAME].isCompression,
+            currentColor: this.data[STORAGE_NAME].currentColor,
+            currentSize: this.data[STORAGE_NAME].currentSize,
+            currentFontWeight: this.data[STORAGE_NAME].currentFontWeight,
+            currentFontStroke: this.data[STORAGE_NAME].currentFontStroke,
+            recentColors: this.data[STORAGE_NAME].recentColors,
             i18n: this.i18n,
             isDebug: isDebug,
         });
@@ -198,6 +208,11 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         this.data[STORAGE_NAME][key] = data;
         this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
     }
+
+    // getConfig(key) {
+    //     if(key === '[all]') return this.data[STORAGE_NAME];
+    //     return this.data[STORAGE_NAME][key];
+    // }
 
     showDialog() {
         const dialog = new Dialog({
