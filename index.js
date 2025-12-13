@@ -22,7 +22,7 @@ const defaultConfig = {
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '0.0.6';
+const version = '0.0.7';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
