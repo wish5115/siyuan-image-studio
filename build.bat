@@ -35,8 +35,10 @@ if exist "%TEMP_DIR%\build.bat" del /q "%TEMP_DIR%\build.bat"
 if exist "%TEMP_DIR%\.hotreload" del /q "%TEMP_DIR%\.hotreload"
 
 REM 清理 libs/ 中的 -origin 文件
-if exist "%TEMP_DIR%\libs\siyuan-image-studio-origin.html" del /q "%TEMP_DIR%\libs\siyuan-image-studio-origin.html"
-if exist "%TEMP_DIR%\libs\siyuan-image-studio-origin.js" del /q "%TEMP_DIR%\libs\siyuan-image-studio-origin.js"
+del /q "%TEMP_DIR%\libs\siyuan-image-studio-origin*.html" 2>nul
+del /q "%TEMP_DIR%\libs\siyuan-image-studio-origin*.js" 2>nul
+REM if exist "%TEMP_DIR%\libs\siyuan-image-studio-origin.html" del /q "%TEMP_DIR%\libs\siyuan-image-studio-origin.html"
+REM if exist "%TEMP_DIR%\libs\siyuan-image-studio-origin.js" del /q "%TEMP_DIR%\libs\siyuan-image-studio-origin.js"
 
 REM 删除旧的输出文件
 if exist "%ORIGINAL_DIR%\%OUTPUT%" del /q "%ORIGINAL_DIR%\%OUTPUT%"
