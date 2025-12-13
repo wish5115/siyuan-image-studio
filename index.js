@@ -13,12 +13,16 @@ const defaultConfig = {
     currentFontWeight: 'normal', // 字体粗细
     currentFontStroke: 'none', // 字体描边
     recentColors: [], // 最近使用的颜色
+    currentArrowStyle: 'normal', // ✨ 全局箭头样式变量
+    currentArrowHeadStyle: 'triangle', // ✨ 新增：箭头头部样式
+    currentRectRadius: 0, // ✨ 全局矩形圆角变量
+    currentMinTailWidth: 0, // ✨ 新增：箭头线条尾部最小宽度
 };
 
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '0.0.5';
+const version = '0.0.6';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -36,6 +40,10 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             currentFontWeight: this.data[STORAGE_NAME].currentFontWeight,
             currentFontStroke: this.data[STORAGE_NAME].currentFontStroke,
             recentColors: this.data[STORAGE_NAME].recentColors,
+            currentArrowStyle: this.data[STORAGE_NAME].currentArrowStyle,
+            currentArrowHeadStyle: this.data[STORAGE_NAME].currentArrowHeadStyle,
+            currentRectRadius: this.data[STORAGE_NAME].currentRectRadius,
+            currentMinTailWidth: this.data[STORAGE_NAME].currentMinTailWidth,
             i18n: this.i18n,
             isDebug: isDebug,
         });
