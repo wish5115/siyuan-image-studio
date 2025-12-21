@@ -23,7 +23,7 @@ const defaultConfig = {
 };
 
 // true 调试 false 生产
-const isDebug = true;
+const isDebug = false;
 // 当前版本
 const version = '1.0.0';
 
