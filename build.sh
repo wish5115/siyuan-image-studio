@@ -37,6 +37,7 @@ rm -f  "$TEMP_DIR/.hotreload"
 # 清理 libs/ 中的 -origin 文件
 rm -f "$TEMP_DIR/libs/siyuan-image-studio-origin"*.html
 rm -f "$TEMP_DIR/libs/siyuan-image-studio-origin"*.js
+rm -f "$TEMP_DIR/libs/"*_副本.js
 
 # ✅ 使用保存的原始目录
 (cd "$TEMP_DIR" && zip -r "$ORIGINAL_DIR/$OUTPUT" .)

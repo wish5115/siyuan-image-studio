@@ -17,12 +17,15 @@ const defaultConfig = {
     currentArrowHeadStyle: 'triangle', // ✨ 新增：箭头头部样式
     currentRectRadius: 0, // ✨ 全局矩形圆角变量
     currentMinTailWidth: 0, // ✨ 新增：箭头线条尾部最小宽度
+    currentMarkerSize: 13, // ✨ 新增：全局序号标记大小变量（圆形半径）
+    currentFontFamily: '', // ✨ 新增：全局字体变量
+    currentFontSize: 24, // ✨ 新增：全局字体大小变量
 };
 
 // true 调试 false 生产
-const isDebug = false;
+const isDebug = true;
 // 当前版本
-const version = '0.0.7';
+const version = '1.0.0';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -44,6 +47,9 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             currentArrowHeadStyle: this.data[STORAGE_NAME].currentArrowHeadStyle,
             currentRectRadius: this.data[STORAGE_NAME].currentRectRadius,
             currentMinTailWidth: this.data[STORAGE_NAME].currentMinTailWidth,
+            currentMarkerSize: this.data[STORAGE_NAME].currentMarkerSize,
+            currentFontFamily: this.data[STORAGE_NAME].currentFontFamily,
+            currentFontSize: this.data[STORAGE_NAME].currentFontSize,
             i18n: this.i18n,
             isDebug: isDebug,
         });
@@ -191,7 +197,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                     vipKeyButton.style.marginTop = "10px";
                     vipKeyButton.style.marginLeft = "10px";
                     vipKeyButton.style.backgroundColor = "var(--b3-theme-error)";
-                    vipKeyButton.innerHTML = this.t("Buy Now");
+                    vipKeyButton.innerHTML = this.t("Upgrade Now");
                     vipKeyButton.addEventListener("click", () => {
                         this.showDialog();
                     });
@@ -223,10 +229,12 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
     // }
 
     showDialog() {
+        const isVip = this.data[STORAGE_NAME].isVip;
+        const t = this.t.bind(this);
         const dialog = new Dialog({
             title: this.t('Upgrade VIP'),
             content: `<div class="b3-dialog__content" style="padding: 10px;">
-<style>
+        <style>
             .vip-popup-content {
                 background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
                 color: #ffffff;
@@ -237,7 +245,6 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
                 border: 1px solid rgba(255, 255, 255, 0.1);
             }
-
             .vip-popup-content .vip-badge {
                 background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
                 color: #1a1a1a;
@@ -248,9 +255,8 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 margin-bottom: 25px;
                 box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
                 font-size: 16px;
-                ${this.data[STORAGE_NAME].isVip ? '' : 'display: none;'}
+                ${isVip ? '' : 'display: none;'}
             }
-
             .vip-popup-content .section-title {
                 color: #ffd700;
                 font-size: 20px;
@@ -261,17 +267,14 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 border-bottom: 2px solid rgba(255, 215, 0, 0.3);
                 padding-bottom: 10px;
             }
-
             .vip-popup-content .title-icon {
                 font-size: 24px;
             }
-
             .vip-popup-content .features-list {
                 list-style: none;
                 padding: 0;
                 margin: 20px 0;
             }
-
             .vip-popup-content .features-list li {
                 background: rgba(255, 255, 255, 0.05);
                 padding: 12px 20px;
@@ -283,16 +286,13 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 gap: 10px;
                 transition: all 0.3s ease;
             }
-
             .vip-popup-content .features-list li:hover {
                 background: rgba(255, 255, 255, 0.1);
                 transform: translateX(5px);
             }
-
             .vip-popup-content .check-icon {
                 font-size: 18px;
             }
-
             .vip-popup-content .badge-soon {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: #fff;
@@ -302,21 +302,117 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 margin-left: 8px;
                 font-weight: 500;
             }
-
+            .vip-popup-content .pricing-table {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(210.5px, 1fr));
+                gap: 15px;
+                margin: 20px 0;
+            }
+            .vip-popup-content .pricing-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 2px solid rgba(255, 215, 0, 0.3);
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                cursor: pointer;
+            }
+            .vip-popup-content .pricing-card:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 215, 0, 0.6);
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
+            }
+            .vip-popup-content .pricing-card:active {
+                transform: translateY(-2px);
+            }
+            .vip-popup-content .pricing-card.recommended {
+                border-color: #ffd700;
+                background: rgba(255, 215, 0, 0.1);
+            }
+            .vip-popup-content .pricing-card.recommended::before {
+                content: '🔥 推荐';
+                position: absolute;
+                top: 10px;
+                right: -25px;
+                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+                color: white;
+                padding: 4px 30px;
+                font-size: 12px;
+                font-weight: bold;
+                transform: rotate(45deg);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            }
+            .vip-popup-content .pricing-card.student {
+                border-color: #4CAF50;
+                background: rgba(76, 175, 80, 0.1);
+            }
+            .vip-popup-content .pricing-card.student::before {
+                content: '🎓 学生';
+                position: absolute;
+                top: 10px;
+                right: -25px;
+                background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+                color: white;
+                padding: 4px 30px;
+                font-size: 12px;
+                font-weight: bold;
+                transform: rotate(45deg);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            }
+            .vip-popup-content .pricing-period {
+                color: #b0b0b0;
+                font-size: 16px;
+                margin-bottom: 10px;
+                font-weight: 500;
+            }
+            .vip-popup-content .pricing-amount {
+                color: #ffd700;
+                font-size: 36px;
+                font-weight: bold;
+                margin: 10px 0;
+                text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+            }
+            .vip-popup-content .pricing-card.student .pricing-amount {
+                color: #4CAF50;
+                text-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+            }
+            .vip-popup-content .pricing-amount .currency {
+                font-size: 20px;
+                vertical-align: super;
+            }
+            .vip-popup-content .pricing-description {
+                color: #909090;
+                font-size: 13px;
+                margin-top: 10px;
+            }
+            .vip-popup-content .pricing-subtitle {
+                color: #a0a0a0;
+                font-size: 13px;
+                margin-top: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+            }
+            .vip-popup-content .coffee-icon {
+                font-size: 14px;
+                opacity: 0.8;
+            }
             .vip-popup-content .steps-list {
                 counter-reset: step-counter;
                 list-style: none;
                 padding: 0;
                 margin: 20px 0;
             }
-
             .vip-popup-content .steps-list > li {
                 counter-increment: step-counter;
                 margin: 20px 0;
                 position: relative;
                 padding-left: 50px;
             }
-
             .vip-popup-content .steps-list > li::before {
                 content: counter(step-counter);
                 position: absolute;
@@ -333,19 +429,16 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 font-weight: bold;
                 font-size: 18px;
             }
-
             .vip-popup-content .step-content {
                 background: rgba(255, 255, 255, 0.03);
                 padding: 20px;
                 border-radius: 10px;
                 border: 1px solid rgba(255, 255, 255, 0.08);
             }
-
             .vip-popup-content .step-content > p {
                 margin: 0 0 15px 0;
                 color: #e0e0e0;
             }
-
             .vip-popup-content .qrcode {
                 text-align: center;
                 padding: 20px;
@@ -354,17 +447,14 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 margin-top: 15px;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             }
-
             .vip-popup-content .qrcode img {
                 border-radius: 8px;
             }
-
             .vip-popup-content .contact-list {
                 list-style: none;
                 padding: 0;
                 margin: 15px 0 0 0;
             }
-
             .vip-popup-content .contact-list li {
                 padding: 10px 15px;
                 margin: 8px 0;
@@ -375,27 +465,22 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 gap: 10px;
                 transition: background 0.3s ease;
             }
-
             .vip-popup-content .contact-list li:hover {
                 background: rgba(255, 255, 255, 0.1);
             }
-
             .vip-popup-content .contact-icon {
                 font-size: 18px;
                 min-width: 24px;
             }
-
             .vip-popup-content .contact-list a {
                 color: #64b5f6;
                 text-decoration: none;
                 transition: color 0.3s ease;
             }
-
             .vip-popup-content .contact-list a:hover {
                 color: #90caf9;
                 text-decoration: underline;
             }
-
             .vip-popup-content .qq-code {
                 background: rgba(255, 215, 0, 0.2);
                 color: #ffd700;
@@ -405,7 +490,6 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 font-weight: bold;
                 border: 1px solid rgba(255, 215, 0, 0.3);
             }
-
             .vip-popup-content .response-note {
                 background: rgba(102, 126, 234, 0.1);
                 border-left: 3px solid #667eea;
@@ -415,70 +499,158 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 color: #b0b0b0;
                 line-height: 1.6;
             }
-
+            .vip-popup-content .student-note {
+                background: rgba(76, 175, 80, 0.1);
+                border-left: 3px solid #4CAF50;
+                padding: 12px 15px;
+                margin-top: 15px;
+                border-radius: 6px;
+                font-size: 13px;
+                color: #b0b0b0;
+                line-height: 1.6;
+            }
+            .vip-popup-content .discounts-note {
+                text-align: center;
+                margin-top: 15px;
+                padding: 10px;
+                background: rgba(255, 215, 0, 0.05);
+                border-radius: 8px;
+                border: 1px dashed rgba(255, 215, 0, 0.3);
+            }
+            .vip-popup-content .discounts-note a {
+                color: #ffd700;
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+            }
+            .vip-popup-content .discounts-note a:hover {
+                color: #ffed4e;
+                text-decoration: underline;
+            }
             /* 滚动条美化 */
             .vip-popup-content::-webkit-scrollbar {
                 width: 8px;
             }
-
             .vip-popup-content::-webkit-scrollbar-track {
                 background: rgba(255, 255, 255, 0.05);
                 border-radius: 4px;
             }
-
             .vip-popup-content::-webkit-scrollbar-thumb {
                 background: rgba(255, 215, 0, 0.3);
                 border-radius: 4px;
             }
-
             .vip-popup-content::-webkit-scrollbar-thumb:hover {
                 background: rgba(255, 215, 0, 0.5);
             }
         </style>
         <div class="vip-popup-content">
-            <div class="vip-badge">${this.t('You are already a VIP member, no need to upgrade')} ✨</div>
+            <div class="vip-badge">${t('You are already a VIP member, no need to upgrade ✨')}</div>
             <h3 class="section-title">
                 <span class="title-icon">🎯</span>
-                ${this.t('Upgrade to VIP to unlock more advanced features')}
+                ${t('Upgrade to VIP to unlock more advanced features')}
             </h3>
             <ul class="features-list">
-                <li><span class="check-icon">✅</span> ${this.t('Unlimited usage')}</li>
-                <li><span class="check-icon">✅</span> ${this.t('Advanced AI image editing')}<span class="badge-soon">${this.t('Coming soon')}</span></li>
-                <li><span class="check-icon">✅</span> ${this.t('Batch image processing')}<span class="badge-soon">${this.t('Coming soon')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Unlimited usage')}</li>
+                <li><span class="check-icon">✅</span> ${t('Advanced AI image editing')}<span class="badge-soon">${t('Coming soon')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Batch image processing')}<span class="badge-soon">${t('Coming soon')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Image editing and special effects')}<span class="badge-soon">${t('Coming soon')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Tool supports image cropping, watermark removal, and OCR')}<span class="badge-soon">${t('Coming soon')}</span></li>
             </ul>
+            
             <h3 class="section-title">
+                <span class="title-icon">💰</span>
+                ${t('VIP Pricing')}
+            </h3>
+            <div class="pricing-table">
+                <div class="pricing-card">
+                    <div class="pricing-period">${t('1 Year')}</div>
+                    <div class="pricing-amount">
+                        <span class="currency">¥</span>10
+                    </div>
+                    <div class="pricing-subtitle">
+                        <span class="coffee-icon">☕</span>
+                        <span class="coffee-text">${t('~ Half a cup of coffee')}</span>
+                    </div>
+                    <div class="pricing-description">${t('Affordable annual plan')}</div>
+                    
+                </div>
+                <div class="pricing-card recommended">
+                    <div class="pricing-period">${t('3 Years')}</div>
+                    <div class="pricing-amount">
+                        <span class="currency">¥</span>25
+                    </div>
+                    <div class="pricing-subtitle">
+                        <span class="coffee-icon">☕</span>
+                        <span class="coffee-text">${t('~ One cup of coffee')}</span>
+                    </div>
+                    <div class="pricing-description">${t('Best value for money')}</div>
+                    
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-period">${t('Lifetime')}</div>
+                    <div class="pricing-amount">
+                        <span class="currency">¥</span>48
+                    </div>
+                    <div class="pricing-subtitle">
+                        <span class="coffee-icon">☕☕</span>
+                        <span class="coffee-text">${t('~ Two cups of coffee')}</span>
+                    </div>
+                    <div class="pricing-description">${t('One-time payment, lifetime access')}</div>
+                    
+                </div>
+                <div class="pricing-card student">
+                    <div class="pricing-period">${t('4 Years')}</div>
+                    <div class="pricing-amount">
+                        <span class="currency">¥</span>20
+                    </div>
+                    <div class="pricing-subtitle">
+                        <span class="coffee-icon">☕</span>
+                        <span class="coffee-text">${t('~ 0.8 cup of coffee')}</span>
+                    </div>
+                    <div class="pricing-description">${t('Student special offer')}</div>
+                    
+                </div>
+            </div>
+            <div class="discounts-note">
+                <span style="margin-right: 8px;">🎉</span><a href="https://wilson.lovestoblog.com/vip/ActivityPlan.html" target="_blank">${t('More discounts available')}</a>
+            </div>
+            <div class="student-note">
+                <span style="margin-right: 8px;">💡</span>${t('Student price requires verification of student status (student ID card or campus card photo)')}
+            </div>
+            
+            <h3 class="section-title" id="payment-section">
                 <span class="title-icon">💎</span>
-                ${this.t('How to upgrade to VIP')}
+                ${t('How to upgrade to VIP')}
             </h3>
             <ol class="steps-list">
                 <li>
                     <div class="step-content">
-                        <p>${this.t('After donation, you can upgrade to VIP. Supported donation methods:')}</p>
+                        <p>${t('Pay through the following methods: ')}</p>
                         <div class="qrcode">
-                            <div><img src="https://b3logfile.com/file/2025/12/image-ukLI8JA.png?imageView2/2/interlace/1/format/webp" alt="${this.t('WeChat donation QR code')}" /></div>
-                            <div style="margin-top: 10px;"><img src="https://b3logfile.com/file/2025/12/image-PyncEHH.png?imageView2/2/interlace/1/format/webp" alt="${this.t('Alipay donation QR code')}" /></div>
+                            <div><img src="https://b3logfile.com/file/2025/12/image-ukLI8JA.png?imageView2/2/interlace/1/format/webp" alt="${t('WeChat donation QR code')}" /></div>
+                            <div style="margin-top: 10px;"><img src="https://b3logfile.com/file/2025/12/image-PyncEHH.png?imageView2/2/interlace/1/format/webp" alt="${t('Alipay donation QR code')}" /></div>
                         </div>
                     </div>
                 </li>
                 <li>
                     <div class="step-content">
-                        <p>${this.t('After donation, you can contact the author via the following methods:')}</p>
+                        <p>${t('After payment, contact the author through the following methods to obtain the authorization code:')}</p>
                         <ul class="contact-list">
                             <li>
                                 <span class="contact-icon">💬</span>
-                                <a href="https://ld246.com/chats/wilsons" target="_blank">${this.t('Leave a message in LianDi Community')}</a>
+                                <a href="https://ld246.com/chats/wilsons" target="_blank">${t('Leave a message in LianDi Community')}</a>
                             </li>
                             <li>
                                 <span class="contact-icon">📧</span>
-                                <a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=MkVbQVoHAwMHclRdSl9TW14cUV1f" target="_blank">${this.t('QQ message')}</a>
+                                <a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=MkVbQVoHAwMHclRdSl9TW14cUV1f" target="_blank">${t('QQ message')}</a>
                             </li>
                             <li>
                                 <span class="contact-icon">👥</span>
-                                ${this.t('QQ group')}:<code class="qq-code">283157619</code>${this.t('Contact the group owner')}
+                                ${t('QQ group')}:<code class="qq-code">283157619</code>${t('Contact the group owner')}
                             </li>
                             <li class="response-note">
                                 <span class="contact-icon">⏰</span>
-                                ${this.t('No matter which way, the author will reply and send the license code as soon as possible, usually within 24 hours.')}
+                                ${t('No matter which way, the author will reply and send the license code as soon as possible, usually within 24 hours.')}
                             </li>
                         </ul>
                     </div>
@@ -489,6 +661,17 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             width: this.isMobile ? "92vw" : "560px",
             height: this.isMobile ? "80vh" : "540px",
         });
+        setTimeout(() => {
+            const paymentSection = dialog.element.querySelector('#payment-section');
+            const pricingTable = dialog.element.querySelector('.pricing-table');
+            if(!paymentSection || !pricingTable) return;
+            pricingTable.addEventListener('click', function(e) {
+                paymentSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            });
+        }, 100);
     }
 
     t(key) {

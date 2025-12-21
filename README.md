@@ -249,7 +249,7 @@ Configure in SiYuan Notes `Settings`​ → `Plugins`​ → `SiYuan Image Studi
 
 #### How to Upgrade to VIP
 
-1. Click `Buy Now` button in settings
+1. Click `Upgrade Now` button in settings
 2. Scan QR code with WeChat or Alipay to donate
 3. Contact author via one of these methods to get license key:
 
