@@ -147,8 +147,10 @@
   "Load Project...": "Load Project...",
   "(Lab)": "(Lab)",
   "✅ Load success": "✅ Load success",
+  "❌ Load failed": "❌ Load failed",
   "✅ Save success": "✅ Save success",
   "Saving...": "Saving...",
+  "Loading...": "Loading...",
   "You have unsaved changes, reloading will lose these changes. Do you want to continue?": "You have unsaved changes, reloading will lose these changes. Do you want to continue?",
   "❌ Save cancelled": "❌ Save cancelled",
   "❌ Failed to save project": "❌ Failed to save project"
