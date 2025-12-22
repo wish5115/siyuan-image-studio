@@ -27,7 +27,7 @@ const defaultConfig = {
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '1.0.1';
+const version = '1.0.2';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -269,7 +269,26 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         const dialog = new Dialog({
             title: this.t('Upgrade VIP'),
             content: `<div class="b3-dialog__content" style="padding: 10px;">
-        <style>
+                ${this.getVipHtml(isVip, t)}
+            </div>`,
+            width: this.isMobile ? "92vw" : "560px",
+            height: this.isMobile ? "80vh" : "540px",
+        });
+        setTimeout(() => {
+            const paymentSection = dialog.element.querySelector('#payment-section');
+            const pricingTable = dialog.element.querySelector('.pricing-table');
+            if(!paymentSection || !pricingTable) return;
+            pricingTable.addEventListener('click', function(e) {
+                paymentSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            });
+        }, 100);
+    }
+
+    getVipHtml(isVip, t) {
+        return `<style>
             .vip-popup-content {
                 background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
                 color: #ffffff;
@@ -590,6 +609,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 <li><span class="check-icon">✅</span> ${t('Batch image processing')}<span class="badge-soon">${t('Coming soon')}</span></li>
                 <li><span class="check-icon">✅</span> ${t('Image editing and special effects')}<span class="badge-soon">${t('Coming soon')}</span></li>
                 <li><span class="check-icon">✅</span> ${t('Tool supports image cropping, watermark removal, and OCR')}<span class="badge-soon">${t('Coming soon')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('VIP Exclusive Channel: Your technical issues get priority support, your feature requests move to the front of the development queue')}</li>
             </ul>
             
             <h3 class="section-title">
@@ -691,22 +711,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                     </div>
                 </li>
             </ol>
-        </div>
-</div>`,
-            width: this.isMobile ? "92vw" : "560px",
-            height: this.isMobile ? "80vh" : "540px",
-        });
-        setTimeout(() => {
-            const paymentSection = dialog.element.querySelector('#payment-section');
-            const pricingTable = dialog.element.querySelector('.pricing-table');
-            if(!paymentSection || !pricingTable) return;
-            pricingTable.addEventListener('click', function(e) {
-                paymentSection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-            });
-        }, 100);
+        </div>`;
     }
 
     t(key) {
