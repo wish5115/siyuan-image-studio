@@ -8,6 +8,8 @@ const defaultConfig = {
     isCompression: true,
     vipKey: "",
     isVip: false,
+    expireDate: '',
+    commonColors: '', // ✨ 全局常用颜色变量
     currentColor: '#ff0000', // 画笔颜色
     currentSize: 2, // 画笔粗细
     currentFontWeight: 'normal', // 字体粗细
@@ -25,7 +27,7 @@ const defaultConfig = {
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '1.0.0';
+const version = '1.0.1';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -37,6 +39,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             backup: this.data[STORAGE_NAME].backup,
             vipKey: this.data[STORAGE_NAME].vipKey,
             isVip: this.data[STORAGE_NAME].isVip,
+            commonColors: this.data[STORAGE_NAME].commonColors,
             isCompression: this.data[STORAGE_NAME].isCompression,
             currentColor: this.data[STORAGE_NAME].currentColor,
             currentSize: this.data[STORAGE_NAME].currentSize,
@@ -51,6 +54,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             currentFontFamily: this.data[STORAGE_NAME].currentFontFamily,
             currentFontSize: this.data[STORAGE_NAME].currentFontSize,
             i18n: this.i18n,
+            isMobile: this.isMobile,
             isDebug: isDebug,
         });
     }
@@ -94,6 +98,10 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 if (shortcutInput) {
                     this.data[STORAGE_NAME].shortcut = shortcutInput?.value?.trim();
                 }
+                const commonColorsInput = this.setting.dialog.element.querySelector("input[name=commonColors]");
+                if (commonColorsInput) {
+                    this.data[STORAGE_NAME].commonColors = commonColorsInput?.value?.trim();
+                }
                 const backupInput = this.setting.dialog.element.querySelector("input[name=backup]");
                 if (backupInput) {
                     this.data[STORAGE_NAME].backup = backupInput.checked;
@@ -106,6 +114,8 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 if (vipKeyInput) {
                     this.data[STORAGE_NAME].vipKey = vipKeyInput?.value?.trim();
                 }
+                const expire = ImageStudio.getTempExpireDate();
+                if(expire) this.data[STORAGE_NAME].expireDate = expire || '';
                 this.data[STORAGE_NAME].isVip = await ImageStudio.updateData(this.data[STORAGE_NAME]);
                 await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
             }
@@ -122,6 +132,20 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                     shortcut.placeholder = this.t("Enter shortcut");
                     shortcut.value = this.data[STORAGE_NAME].shortcut || "";
                     return shortcut;
+                },
+        });
+        this.setting.addItem({
+                title: this.t('Common Colors'),
+                direction: "row",
+                description: this.t("Separated by English commas, for example: #000000,#ffffff,#ff0000. If left empty, the plugin’s default color will be used."),
+                createActionElement: () => {
+                    const commonColors = document.createElement("input");
+                    commonColors.type = "text";
+                    commonColors.name = "commonColors";
+                    commonColors.className = "b3-text-field fn__block";
+                    commonColors.placeholder = this.t("Enter common colors");
+                    commonColors.value = this.data[STORAGE_NAME].commonColors || "";
+                    return commonColors;
                 },
         });
         this.setting.addItem({
@@ -169,6 +193,12 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                     vipKey.placeholder = this.t("Enter vip key");
                     vipKey.value = this.data[STORAGE_NAME].vipKey || "";
                     vipKeyContainer.appendChild(vipKey);
+                    // 过期时间
+                    const vipKeyExpire = document.createElement("div");
+                    vipKeyExpire.className = "fn__flex vip-expire";
+                    vipKeyExpire.innerHTML = `<span class="fn__flex-1">${this.t("VIP Key Expire")}: ${this.data[STORAGE_NAME].expireDate || "--"}</span>`;
+                    if(!this.data[STORAGE_NAME].expireDate) vipKeyExpire.style.display = "none";
+                    vipKeyContainer.appendChild(vipKeyExpire);
                     // 验证按钮
                     const vipKeyVerifyButton = document.createElement("button");
                     vipKeyVerifyButton.type = "button";
@@ -188,6 +218,11 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                         // this.data[STORAGE_NAME].isVip = true;
                         // await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
                         if(showAlert) showAlert(this.t("VIP key verified successfully!"));
+                        const expire = ImageStudio.getTempExpireDate();
+                        if(expire) {
+                            vipKeyExpire.innerHTML = `<span class="fn__flex-1">${this.t("VIP Key Expire")}: ${expire}</span>`;
+                            vipKeyExpire.style.display = "block";
+                        }
                     });
                     vipKeyContainer.appendChild(vipKeyVerifyButton);
                     // 购买按钮
