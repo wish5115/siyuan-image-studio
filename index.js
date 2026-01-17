@@ -10,6 +10,7 @@ const defaultConfig = {
     isVip: false,
     expireDate: '',
     commonColors: '', // ✨ 全局常用颜色变量
+    customEmojis: '', // ✨ 自定义表情变量
     currentColor: '#ff0000', // 画笔颜色
     currentSize: 2, // 画笔粗细
     currentFontWeight: 'normal', // 字体粗细
@@ -27,7 +28,7 @@ const defaultConfig = {
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '1.0.3';
+const version = '1.0.4';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -40,6 +41,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             vipKey: this.data[STORAGE_NAME].vipKey,
             isVip: this.data[STORAGE_NAME].isVip,
             commonColors: this.data[STORAGE_NAME].commonColors,
+            customEmojis: this.data[STORAGE_NAME].customEmojis,
             isCompression: this.data[STORAGE_NAME].isCompression,
             currentColor: this.data[STORAGE_NAME].currentColor,
             currentSize: this.data[STORAGE_NAME].currentSize,
@@ -59,11 +61,11 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         });
     }
     onLayoutReady() {
-        
+
     }
 
     onunload() {
-        if(typeof ImageStudio === 'undefined') return;
+        if (typeof ImageStudio === 'undefined') return;
         ImageStudio.destroy();
         document.querySelectorAll(`script[data-plugin="${this.name}"]`).forEach(s => s.remove());
     }
@@ -102,6 +104,10 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 if (commonColorsInput) {
                     this.data[STORAGE_NAME].commonColors = commonColorsInput?.value?.trim();
                 }
+                const customEmojisInput = this.setting.dialog.element.querySelector("input[name=customEmojis]");
+                if (customEmojisInput) {
+                    this.data[STORAGE_NAME].customEmojis = customEmojisInput?.value?.trim();
+                }
                 const backupInput = this.setting.dialog.element.querySelector("input[name=backup]");
                 if (backupInput) {
                     this.data[STORAGE_NAME].backup = backupInput.checked;
@@ -115,142 +121,156 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                     this.data[STORAGE_NAME].vipKey = vipKeyInput?.value?.trim();
                 }
                 const expire = ImageStudio.getTempExpireDate();
-                if(expire) this.data[STORAGE_NAME].expireDate = expire || '';
+                if (expire) this.data[STORAGE_NAME].expireDate = expire || '';
                 this.data[STORAGE_NAME].isVip = await ImageStudio.updateData(this.data[STORAGE_NAME]);
                 await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
             }
         });
         this.setting.addItem({
-                title: this.t('Shortcut'),
-                direction: "row",
-                description: this.t("Set the shortcut to open Image Studio"),
-                createActionElement: () => {
-                    const shortcut = document.createElement("input");
-                    shortcut.type = "text";
-                    shortcut.name = "shortcut";
-                    shortcut.className = "b3-text-field fn__block";
-                    shortcut.placeholder = this.t("Enter shortcut");
-                    shortcut.value = this.data[STORAGE_NAME].shortcut || "";
-                    return shortcut;
-                },
+            title: this.t('Shortcut'),
+            direction: "row",
+            description: this.t("Set the shortcut to open Image Studio"),
+            createActionElement: () => {
+                const shortcut = document.createElement("input");
+                shortcut.type = "text";
+                shortcut.name = "shortcut";
+                shortcut.className = "b3-text-field fn__block";
+                shortcut.placeholder = this.t("Enter shortcut");
+                shortcut.value = this.data[STORAGE_NAME].shortcut || "";
+                return shortcut;
+            },
         });
         this.setting.addItem({
-                title: this.t('Common Colors'),
-                direction: "row",
-                description: this.t("Separated by English commas, for example: #000000,#ffffff,#ff0000. If left empty, the plugin’s default color will be used."),
-                createActionElement: () => {
-                    const commonColors = document.createElement("input");
-                    commonColors.type = "text";
-                    commonColors.name = "commonColors";
-                    commonColors.className = "b3-text-field fn__block";
-                    commonColors.placeholder = this.t("Enter common colors");
-                    commonColors.value = this.data[STORAGE_NAME].commonColors || "";
-                    return commonColors;
-                },
+            title: this.t('Custom Common Colors'),
+            direction: "row",
+            description: this.t("Separated by English commas, for example: #000000,#ffffff,#ff0000. If left empty, the plugin’s default color will be used."),
+            createActionElement: () => {
+                const commonColors = document.createElement("input");
+                commonColors.type = "text";
+                commonColors.name = "commonColors";
+                commonColors.className = "b3-text-field fn__block";
+                commonColors.placeholder = this.t("Enter common colors");
+                commonColors.value = this.data[STORAGE_NAME].commonColors || "";
+                return commonColors;
+            },
         });
         this.setting.addItem({
-                title: this.t("Backup"),
-                direction: "row",
-                description: this.t("Backup your image to the cloud"),
-                createActionElement: () => {
-                    const backupContainer = document.createElement("div");
-                    const backup = document.createElement("input");
-                    backup.type = "checkbox";
-                    backup.name = "backup";
-                    backup.className = "b3-switch fn__block";
-                    backup.title = this.t("If enabled, your images will be backed up to the local file system.");
-                    backup.checked = this.data[STORAGE_NAME].backup || false;
-                    backupContainer.appendChild(backup);
-                    return backupContainer;
-                }
+            title: this.t("Custom Emojis"),
+            direction: "row",
+            description: this.t("Separated by English commas, for example: 🌟,🚀,🔥. If left empty, the plugin’s default emoji will be used."),
+            createActionElement: () => {
+                const customEmojis = document.createElement("input");
+                customEmojis.type = "text";
+                customEmojis.name = "customEmojis";
+                customEmojis.className = "b3-text-field fn__block";
+                customEmojis.placeholder = this.t("Enter your emojis");
+                customEmojis.value = this.data[STORAGE_NAME].customEmojis || "";
+                return customEmojis;
+            },
         });
         this.setting.addItem({
-                title: this.t("Images Compression"),
-                direction: "row",
-                description: this.t("Enable image compression"),
-                createActionElement: () => {
-                    const isCompressionContainer = document.createElement("div");
-                    const isCompression = document.createElement("input");
-                    isCompression.type = "checkbox";
-                    isCompression.name = "isCompression";
-                    isCompression.className = "b3-switch fn__block";
-                    isCompression.title = this.t("If enabled, your images will be compressed.");
-                    isCompression.checked = this.data[STORAGE_NAME].isCompression || false;
-                    isCompressionContainer.appendChild(isCompression);
-                    return isCompressionContainer;
-                }
+            title: this.t("Backup"),
+            direction: "row",
+            description: this.t("Backup your image to the cloud"),
+            createActionElement: () => {
+                const backupContainer = document.createElement("div");
+                const backup = document.createElement("input");
+                backup.type = "checkbox";
+                backup.name = "backup";
+                backup.className = "b3-switch fn__block";
+                backup.title = this.t("If enabled, your images will be backed up to the local file system.");
+                backup.checked = this.data[STORAGE_NAME].backup || false;
+                backupContainer.appendChild(backup);
+                return backupContainer;
+            }
         });
         this.setting.addItem({
-                title: this.t("VIP Key"),
-                direction: "row",
-                description: this.t("Enter your vip key to get more features"),
-                createActionElement: () => {
-                    const vipKeyContainer = document.createElement("div");
-                    const vipKey = document.createElement("input");
-                    vipKey.type = "text";
-                    vipKey.name = "vipKey";
-                    vipKey.className = "b3-text-field fn__block";
-                    vipKey.placeholder = this.t("Enter vip key");
-                    vipKey.value = this.data[STORAGE_NAME].vipKey || "";
-                    vipKeyContainer.appendChild(vipKey);
-                    // 过期时间
-                    const vipKeyExpire = document.createElement("div");
-                    vipKeyExpire.className = "fn__flex vip-expire";
-                    vipKeyExpire.innerHTML = `<span class="fn__flex-1">${this.t("VIP Key Expire")}: ${this.data[STORAGE_NAME].expireDate || "--"}</span>`;
-                    if(!this.data[STORAGE_NAME].expireDate) vipKeyExpire.style.display = "none";
-                    vipKeyContainer.appendChild(vipKeyExpire);
-                    // 验证按钮
-                    const vipKeyVerifyButton = document.createElement("button");
-                    vipKeyVerifyButton.type = "button";
-                    vipKeyVerifyButton.className = "b3-button b3-button--secondary";
-                    vipKeyVerifyButton.style.marginTop = "10px";
-                    vipKeyVerifyButton.innerHTML = this.t("Verify Key");
-                    vipKeyVerifyButton.addEventListener("click", async () => {
-                        const verification = await this.verifyVipKey(vipKey.value.trim());
-                        if (!verification?.success) {
-                            if(showAlert) showAlert(verification.message || this.t("VIP key verification failed!"));
-                            // this.data[STORAGE_NAME].isVip = false;
-                            // await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
-                            // ImageStudio.updateData(this.data[STORAGE_NAME]);
-                            return;
-                        }
-                        // this.data[STORAGE_NAME].vipKey = vipKey.value.trim();
-                        // this.data[STORAGE_NAME].isVip = true;
+            title: this.t("Images Compression"),
+            direction: "row",
+            description: this.t("Enable image compression"),
+            createActionElement: () => {
+                const isCompressionContainer = document.createElement("div");
+                const isCompression = document.createElement("input");
+                isCompression.type = "checkbox";
+                isCompression.name = "isCompression";
+                isCompression.className = "b3-switch fn__block";
+                isCompression.title = this.t("If enabled, your images will be compressed.");
+                isCompression.checked = this.data[STORAGE_NAME].isCompression || false;
+                isCompressionContainer.appendChild(isCompression);
+                return isCompressionContainer;
+            }
+        });
+        this.setting.addItem({
+            title: this.t("VIP Key"),
+            direction: "row",
+            description: this.t("Enter your vip key to get more features"),
+            createActionElement: () => {
+                const vipKeyContainer = document.createElement("div");
+                const vipKey = document.createElement("input");
+                vipKey.type = "text";
+                vipKey.name = "vipKey";
+                vipKey.className = "b3-text-field fn__block";
+                vipKey.placeholder = this.t("Enter vip key");
+                vipKey.value = this.data[STORAGE_NAME].vipKey || "";
+                vipKeyContainer.appendChild(vipKey);
+                // 过期时间
+                const vipKeyExpire = document.createElement("div");
+                vipKeyExpire.className = "fn__flex vip-expire";
+                vipKeyExpire.innerHTML = `<span class="fn__flex-1">${this.t("VIP Key Expire")}: ${this.data[STORAGE_NAME].expireDate || "--"}</span>`;
+                if (!this.data[STORAGE_NAME].expireDate) vipKeyExpire.style.display = "none";
+                vipKeyContainer.appendChild(vipKeyExpire);
+                // 验证按钮
+                const vipKeyVerifyButton = document.createElement("button");
+                vipKeyVerifyButton.type = "button";
+                vipKeyVerifyButton.className = "b3-button b3-button--secondary";
+                vipKeyVerifyButton.style.marginTop = "10px";
+                vipKeyVerifyButton.innerHTML = this.t("Verify Key");
+                vipKeyVerifyButton.addEventListener("click", async () => {
+                    const verification = await this.verifyVipKey(vipKey.value.trim());
+                    if (!verification?.success) {
+                        if (showAlert) showAlert(verification.message || this.t("VIP key verification failed!"));
+                        // this.data[STORAGE_NAME].isVip = false;
                         // await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
-                        if(showAlert) showAlert(this.t("VIP key verified successfully!"));
-                        const expire = ImageStudio.getTempExpireDate();
-                        if(expire) {
-                            vipKeyExpire.innerHTML = `<span class="fn__flex-1">${this.t("VIP Key Expire")}: ${expire}</span>`;
-                            vipKeyExpire.style.display = "block";
-                        }
-                    });
-                    vipKeyContainer.appendChild(vipKeyVerifyButton);
-                    // 购买按钮
-                    const vipKeyButton = document.createElement("button");
-                    vipKeyButton.type = "button";
-                    vipKeyButton.className = "b3-button b3-button--primary";
-                    vipKeyButton.style.marginTop = "10px";
-                    vipKeyButton.style.marginLeft = "10px";
-                    vipKeyButton.style.backgroundColor = "var(--b3-theme-error)";
-                    vipKeyButton.innerHTML = this.t("Upgrade Now");
-                    vipKeyButton.addEventListener("click", () => {
-                        this.showDialog();
-                    });
-                    vipKeyContainer.appendChild(vipKeyButton);
-                    return vipKeyContainer;
-                }
+                        // ImageStudio.updateData(this.data[STORAGE_NAME]);
+                        return;
+                    }
+                    // this.data[STORAGE_NAME].vipKey = vipKey.value.trim();
+                    // this.data[STORAGE_NAME].isVip = true;
+                    // await this.saveData(STORAGE_NAME, this.data[STORAGE_NAME]);
+                    if (showAlert) showAlert(this.t("VIP key verified successfully!"));
+                    const expire = ImageStudio.getTempExpireDate();
+                    if (expire) {
+                        vipKeyExpire.innerHTML = `<span class="fn__flex-1">${this.t("VIP Key Expire")}: ${expire}</span>`;
+                        vipKeyExpire.style.display = "block";
+                    }
+                });
+                vipKeyContainer.appendChild(vipKeyVerifyButton);
+                // 购买按钮
+                const vipKeyButton = document.createElement("button");
+                vipKeyButton.type = "button";
+                vipKeyButton.className = "b3-button b3-button--primary";
+                vipKeyButton.style.marginTop = "10px";
+                vipKeyButton.style.marginLeft = "10px";
+                vipKeyButton.style.backgroundColor = "var(--b3-theme-error)";
+                vipKeyButton.innerHTML = this.t("Upgrade Now");
+                vipKeyButton.addEventListener("click", () => {
+                    this.showDialog();
+                });
+                vipKeyContainer.appendChild(vipKeyButton);
+                return vipKeyContainer;
+            }
         });
     }
 
     async verifyVipKey(vipKey) {
         if (vipKey.trim() === "") {
-            return {message: this.t("VIP key cannot be empty"), success: false};
+            return { message: this.t("VIP key cannot be empty"), success: false };
         }
         const isVip = await ImageStudio.verifyKey(vipKey);
         if (!isVip) {
-            return {message: this.t("VIP key verification failed!"), success: false};
+            return { message: this.t("VIP key verification failed!"), success: false };
         }
-        return {message: this.t("VIP key verified successfully!"), success: true};
+        return { message: this.t("VIP key verified successfully!"), success: true };
     }
 
     updateConfig(key, data) {
@@ -269,7 +289,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         const dialog = new Dialog({
             title: this.t('Upgrade VIP'),
             content: `<div class="b3-dialog__content" style="padding: 10px;">
-                ${this.getVipHtml(isVip, t)}
+                ${this.getVipHtml(isVip, t, this.getMachineId())}
             </div>`,
             width: this.isMobile ? "92vw" : "560px",
             height: this.isMobile ? "80vh" : "540px",
@@ -277,17 +297,21 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         setTimeout(() => {
             const paymentSection = dialog.element.querySelector('#payment-section');
             const pricingTable = dialog.element.querySelector('.pricing-table');
-            if(!paymentSection || !pricingTable) return;
-            pricingTable.addEventListener('click', function(e) {
-                paymentSection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
+            if (!paymentSection || !pricingTable) return;
+            pricingTable.addEventListener('click', function (e) {
+                paymentSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             });
         }, 100);
     }
 
-    getVipHtml(isVip, t) {
+    getMachineId() {
+        return window.siyuan.user.userId;
+    }
+
+    getVipHtml(isVip, t, machineId) {
         return `<style>
             .vip-popup-content {
                 background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
@@ -702,6 +726,31 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                             <li>
                                 <span class="contact-icon">👥</span>
                                 ${t('QQ group')}:<code class="qq-code">283157619</code>${t('Contact the group owner')}
+                            </li>
+                            <li style="background: rgba(255, 152, 0, 0.15) !important; border-left: 3px solid #ff9800 !important; padding: 12px 15px !important; margin-top: 12px !important; display: block !important;">
+                                <div style="display: flex; align-items: center; margin-bottom: 10px; color: #ffa726; font-weight: 600;">
+                                    <span class="contact-icon" style="font-size: 20px; margin-right: 8px;">⚠️</span>
+                                    <strong>${t('Important: When contacting the author, please provide your machine ID')}</strong>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: #e0e0e0; font-size: 14px;">${t('Machine ID')}:</span>
+                                    <code id="machine-id-code" style="background: rgba(255, 152, 0, 0.3); padding: 6px 12px; border-radius: 4px; color: #ffd700; font-weight: 600; flex: 1; font-size: 14px;">${machineId}</code>
+                                    <button id="copy-machine-id-btn" style="background: linear-gradient(135deg, #ff9800 0%, #ff6b00 100%); color: white; border: none; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease; white-space: nowrap;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 12px rgba(255, 152, 0, 0.4)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';" onclick="
+                                        const code = '${t('Machine ID')}: ' + document.getElementById('machine-id-code').textContent;
+                                        navigator.clipboard.writeText(code).then(() => {
+                                            const btn = document.getElementById('copy-machine-id-btn');
+                                            const originalText = btn.textContent;
+                                            btn.textContent = '${t('Copied')}!';
+                                            btn.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+                                            setTimeout(() => {
+                                                btn.textContent = originalText;
+                                                btn.style.background = 'linear-gradient(135deg, #ff9800 0%, #ff6b00 100%)';
+                                            }, 2000);
+                                        }).catch(err => {
+                                            console.error('Failed to copy:', err);
+                                        });
+                                    ">📋 ${t('Copy')}</button>
+                                </div>
                             </li>
                             <li class="response-note">
                                 <span class="contact-icon">⏰</span>
