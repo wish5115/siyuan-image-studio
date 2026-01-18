@@ -23,12 +23,16 @@ const defaultConfig = {
     currentMarkerSize: 13, // ✨ 新增：全局序号标记大小变量（圆形半径）
     currentFontFamily: '', // ✨ 新增：全局字体变量
     currentFontSize: 24, // ✨ 新增：全局字体大小变量
+    aiUrl: '', // AI API URL
+    aiApiKey: '', // AI API Key
+    aiModel: '', // AI Model
+    aiSystemPrompt: '你是一个专业的图像编辑助手，请根据用户的要求修改图片，保持图片的原始尺寸风格和内容，仅做必要的修改，不需要解释，直接返回修改后的图片。', // AI系统提示词
 };
 
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '1.0.4';
+const version = '1.0.5';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -55,6 +59,10 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             currentMarkerSize: this.data[STORAGE_NAME].currentMarkerSize,
             currentFontFamily: this.data[STORAGE_NAME].currentFontFamily,
             currentFontSize: this.data[STORAGE_NAME].currentFontSize,
+            aiUrl: this.data[STORAGE_NAME].aiUrl,
+            aiApiKey: this.data[STORAGE_NAME].aiApiKey,
+            aiModel: this.data[STORAGE_NAME].aiModel,
+            aiSystemPrompt: this.data[STORAGE_NAME].aiSystemPrompt,
             i18n: this.i18n,
             isMobile: this.isMobile,
             isDebug: isDebug,
@@ -93,7 +101,8 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
     }
 
     async initSettings() {
-        this.data[STORAGE_NAME] = await this.loadData(STORAGE_NAME) || defaultConfig;
+        this.data[STORAGE_NAME] = {...defaultConfig, ...(await this.loadData(STORAGE_NAME))};
+       this.data[STORAGE_NAME].aiSystemPrompt = this.data[STORAGE_NAME].aiSystemPrompt || defaultConfig.aiSystemPrompt;
         this.setting = new Setting({
             confirmCallback: async () => {
                 const shortcutInput = this.setting.dialog.element.querySelector("input[name=shortcut]");
@@ -634,6 +643,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 <li><span class="check-icon">✅</span> ${t('Image editing and special effects')}<span class="badge-soon">${t('Coming soon')}</span></li>
                 <li><span class="check-icon">✅</span> ${t('Tool supports image cropping, watermark removal, and OCR')}<span class="badge-soon">${t('Coming soon')}</span></li>
                 <li><span class="check-icon">✅</span> ${t('VIP Exclusive Channel: Your technical issues get priority support, your feature requests move to the front of the development queue')}</li>
+                <li><span class="check-icon">✅</span> ${t('Occasional giveaways (join QQ group required)')}</li>
             </ul>
             
             <h3 class="section-title">

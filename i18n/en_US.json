@@ -36,6 +36,7 @@
   "Unlimited usage": "Unlimited usage",
   "VIP Exclusive Channel: Your technical issues get priority support, your feature requests move to the front of the development queue": "VIP Exclusive Channel: Your technical issues get priority support, your feature requests move to the front of the development queue",
   "Advanced AI image editing": "Advanced AI image editing",
+  "Occasional giveaways (join QQ group required)": "Occasional giveaways (join QQ group required)",
   "Coming soon": "Coming soon",
   "Batch image processing": "Batch image processing",
   "Image editing and special effects": "Image editing and special effects",
@@ -179,5 +180,19 @@
   "Sharpness": "Sharpness",
   "Soft": "Soft",
   "Sharp": "Sharp",
-  "Restore": "Restore"
+  "Restore": "Restore",
+  "AI Edit": "AI Edit",
+  "AI URL": "AI URL",
+  "API Key": "API Key",
+  "Model": "Model",
+  "System Prompt": "System Prompt",
+  "Edit Prompt": "Edit Prompt",
+  "Enter editing instructions, such as: make the sky bluer, make the people clearer, etc...": "Enter editing instructions, such as: make the sky bluer, make the people clearer, etc...",
+  "Generate": "Generate",
+  "Generating...": "Generating...",
+  "Please enter editing instructions": "Please enter editing instructions",
+  "Please set a background image first": "Please set a background image first",
+  "Please configure AI settings first": "Please configure AI settings first",
+  "Generated successfully": "Generated successfully",
+  "Generation failed": "Generation failed"
 }

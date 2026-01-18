@@ -35,6 +35,7 @@
   "Upgrade to VIP to unlock more advanced features": "升级VIP会员，解锁更多高级功能",
   "Unlimited usage": "无限使用次数",
   "VIP Exclusive Channel: Your technical issues get priority support, your feature requests move to the front of the development queue": "VIP专属通道：技术问题优先受理，功能需求优先进入开发队列",
+  "Occasional giveaways (join QQ group required)": "不定期发放福利（需要加入QQ群）",
   "Advanced AI image editing": "高级AI修图功能",
   "Coming soon": "即将推出",
   "Batch image processing": "批量处理图片",
@@ -179,5 +180,19 @@
   "Sharpness": "锐度",
   "Soft": "柔",
   "Sharp": "锐",
-  "Restore": "还原"
+  "Restore": "还原",
+  "AI Edit": "AI修图",
+  "AI URL": "AI URL",
+  "API Key": "API密钥",
+  "Model": "模型",
+  "System Prompt": "系统提示词",
+  "Edit Prompt": "修图指令",
+  "Enter editing instructions, such as: make the sky bluer, make the people clearer, etc...": "请输入修图指令，比如：让天空更蓝、让人物更清晰等...",
+  "Generate": "生成",
+  "Generating...": "生成中...",
+  "Please enter editing instructions": "请输入修图指令",
+  "Please set a background image first": "请先设置背景图片",
+  "Please configure AI settings first": "请先配置AI设置",
+  "Generated successfully": "已生成",
+  "Generation failed": "生成失败"
 }
