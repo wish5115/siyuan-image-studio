@@ -2,7 +2,7 @@
 
 ## 📖 Introduction
 
-SiYuan Image Studio is a lightweight image editing plugin designed for SiYuan Notes, allowing you to annotate, doodle, crop, flip, and perform other operations on images directly within your notes without external tools.
+SiYuan Image Studio is a lightweight image editing plugin designed for SiYuan Notes, allowing you to annotate, doodle, crop, flip, adjust tone, use AI retouching, and perform other operations on images directly within your notes without external tools.
 
 ## ✨ Main Features
 
@@ -26,6 +26,8 @@ SiYuan Image Studio is a lightweight image editing plugin designed for SiYuan No
 - ​**Crop**: Free crop image regions
 - ​**Flip**: Horizontal/vertical image flipping
 - ​**Insert Image**: Overlay other images on current image
+- ​**Tone Adjustment**: Adjust image tone, brightness, saturation, etc.
+- ​**AI Retouch**: Perform AI-powered image retouching for even better results in some cases
 
 ### 🛠️ Auxiliary Functions
 
