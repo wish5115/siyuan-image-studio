@@ -194,5 +194,6 @@
   "Please set a background image first": "Please set a background image first",
   "Please configure AI settings first": "Please configure AI settings first",
   "Generated successfully": "Generated successfully",
-  "Generation failed": "Generation failed"
+  "Generation failed": "Generation failed",
+  "Must support image editing": "Must support image editing"
 }

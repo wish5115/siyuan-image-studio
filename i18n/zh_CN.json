@@ -194,5 +194,6 @@
   "Please set a background image first": "请先设置背景图片",
   "Please configure AI settings first": "请先配置AI设置",
   "Generated successfully": "已生成",
-  "Generation failed": "生成失败"
+  "Generation failed": "生成失败",
+  "Must support image editing": "必须支持图片编辑"
 }
