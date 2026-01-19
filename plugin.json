@@ -16,8 +16,8 @@
         "zh_CN": "思源图片编辑器"
     },
     "description": {
-        "default": "A simple image editor for SiYuan Notes, allowing basic annotations, doodling, cropping, flipping, and more.",
-        "zh_CN": "可对思源笔记图片进行简单的标注，涂鸦、裁剪、翻转等操作。"
+        "default": "A simple image editor for SiYuan Notes, allowing basic annotations, doodling, cropping, flipping, adjust tone, use AI retouching, and more.",
+        "zh_CN": "可对思源笔记图片进行简单的标注，涂鸦、裁剪、翻转、色调调整、AI修图等操作。"
     },
     "readme": {
         "default": "README.md",
