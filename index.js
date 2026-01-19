@@ -26,7 +26,7 @@ const defaultConfig = {
     aiUrl: '', // AI API URL
     aiApiKey: '', // AI API Key
     aiModel: '', // AI Model
-    aiSystemPrompt: '你是一个专业的图像处理程序。请根据用户的指令修改画面。请严格保持原图的尺寸、分辨率、光照、透视和色彩风格，确保修改部分与原图无缝融合且无人工痕迹。', // AI系统提示词
+    aiSystemPrompt: '你是一个专业的图像编辑助手，请根据用户的要求修改图片，保持图片的原始尺寸风格和内容，仅做必要的修改，不需要解释，直接返回修改后的图片。', // AI系统提示词
 };
 
 // true 调试 false 生产
