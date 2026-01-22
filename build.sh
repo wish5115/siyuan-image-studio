@@ -38,6 +38,7 @@ rm -f  "$TEMP_DIR/.hotreload"
 rm -f "$TEMP_DIR/libs/siyuan-image-studio-origin"*.html
 rm -f "$TEMP_DIR/libs/siyuan-image-studio-origin"*.js
 rm -f "$TEMP_DIR/libs/"*_副本.js
+rm -f "$TEMP_DIR/"*_副本.png
 
 # ✅ 使用保存的原始目录
 (cd "$TEMP_DIR" && zip -r "$ORIGINAL_DIR/$OUTPUT" .)
