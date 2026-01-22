@@ -27,12 +27,17 @@ const defaultConfig = {
     aiApiKey: '', // AI API Key
     aiModel: '', // AI Model
     aiSystemPrompt: '你是一个专业的图像编辑助手，请根据用户的要求修改图片，保持图片的原始尺寸风格和内容，仅做必要的修改，不需要解释，直接返回修改后的图片。', // AI系统提示词
+    aiOtherParams: '{"size":"1024x1024"}', // AI API其他参数
+    aiApiFormat: 'url',
+    aiLdToken: '',
+    aiModelList: [],
+    currentModelName: '',
 };
 
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '1.0.5';
+const version = '1.0.6';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -63,6 +68,11 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             aiApiKey: this.data[STORAGE_NAME].aiApiKey,
             aiModel: this.data[STORAGE_NAME].aiModel,
             aiSystemPrompt: this.data[STORAGE_NAME].aiSystemPrompt,
+            aiOtherParams: this.data[STORAGE_NAME].aiOtherParams,
+            aiApiFormat: this.data[STORAGE_NAME].aiApiFormat,
+            aiLdToken: this.data[STORAGE_NAME].aiLdToken,
+            aiModelList: this.data[STORAGE_NAME].aiModelList,
+            currentModelName: this.data[STORAGE_NAME].currentModelName,
             i18n: this.i18n,
             isMobile: this.isMobile,
             isDebug: isDebug,
@@ -103,6 +113,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async initSettings() {
         this.data[STORAGE_NAME] = {...defaultConfig, ...(await this.loadData(STORAGE_NAME))};
        this.data[STORAGE_NAME].aiSystemPrompt = this.data[STORAGE_NAME].aiSystemPrompt || defaultConfig.aiSystemPrompt;
+       this.data[STORAGE_NAME].aiApiFormat = this.data[STORAGE_NAME].aiApiFormat || defaultConfig.aiApiFormat;
         this.setting = new Setting({
             confirmCallback: async () => {
                 const shortcutInput = this.setting.dialog.element.querySelector("input[name=shortcut]");
@@ -381,13 +392,24 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
                 font-size: 18px;
             }
             .vip-popup-content .badge-soon {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: #fff;
+                background: linear-gradient(135deg, #667eea 0%, #4c63d2 50%, #764ba2 100%);
+                color: #ffffff;
                 padding: 3px 10px;
                 border-radius: 12px;
                 font-size: 12px;
                 margin-left: 8px;
                 font-weight: 500;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            }
+            .vip-popup-content .badge-partial {
+                background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 50%, #66BB6A 100%);
+                color: #ffffff;
+                padding: 3px 10px;
+                border-radius: 12px;
+                font-size: 12px;
+                margin-left: 8px;
+                font-weight: 500;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             }
             .vip-popup-content .pricing-table {
                 display: grid;
@@ -638,10 +660,10 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             </h3>
             <ul class="features-list">
                 <li><span class="check-icon">✅</span> ${t('Unlimited usage')}</li>
-                <li><span class="check-icon">✅</span> ${t('Advanced AI image editing')}<span class="badge-soon">${t('Coming soon')}</span></li>
-                <li><span class="check-icon">✅</span> ${t('Batch image processing')}<span class="badge-soon">${t('Coming soon')}</span></li>
-                <li><span class="check-icon">✅</span> ${t('Image editing and special effects')}<span class="badge-soon">${t('Coming soon')}</span></li>
-                <li><span class="check-icon">✅</span> ${t('Tool supports image cropping, watermark removal, and OCR')}<span class="badge-soon">${t('Coming soon')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Advanced AI image editing')}<span class="badge-partial">${t('Partially Released')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Batch image processing')}<span class="badge-soon">${t('Coming Soon')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Image editing and special effects')}<span class="badge-partial">${t('Partially Released')}</span></li>
+                <li><span class="check-icon">✅</span> ${t('Tool supports image cropping, watermark removal, and OCR')}<span class="badge-soon">${t('Coming Soon')}</span></li>
                 <li><span class="check-icon">✅</span> ${t('VIP Exclusive Channel: Your technical issues get priority support, your feature requests move to the front of the development queue')}</li>
                 <li><span class="check-icon">✅</span> ${t('Occasional giveaways (join QQ group required)')}</li>
             </ul>

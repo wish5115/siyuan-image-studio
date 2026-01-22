@@ -1,4 +1,4 @@
-// version 1.1.3
+// version 1.1.4
 // see https://scriptcat.org/zh-CN/script-show-page/4824
 (() => {
     // 语言包
@@ -73,6 +73,7 @@
 
             // 创建遮罩层
             const overlay = document.createElement('div');
+            overlay.className = 'msgbox-overlay';
             overlay.style.cssText = `
             position: fixed;
             top: 0;
@@ -88,6 +89,7 @@
 
             // 创建对话框
             const dialog = document.createElement('div');
+            dialog.className = 'msgbox-dialog';
             dialog.style.cssText = `
             background: ${themeColors.bg};
             border-radius: 8px;
@@ -159,6 +161,7 @@
 
             // 创建遮罩层
             const overlay = document.createElement('div');
+            overlay.className = 'msgbox-overlay';
             overlay.style.cssText = `
             position: fixed;
             top: 0;
@@ -174,6 +177,7 @@
 
             // 创建对话框
             const dialog = document.createElement('div');
+            dialog.className = 'msgbox-dialog';
             dialog.style.cssText = `
             background: ${themeColors.bg};
             border-radius: 8px;
@@ -282,6 +286,7 @@
 
             // 创建遮罩层
             const overlay = document.createElement('div');
+            overlay.className = 'msgbox-overlay';
             overlay.style.cssText = `
             position: fixed;
             top: 0;
@@ -297,6 +302,7 @@
 
             // 创建对话框
             const dialog = document.createElement('div');
+            dialog.className = 'msgbox-dialog';
             dialog.style.cssText = `
             background: ${themeColors.bg};
             border-radius: 8px;

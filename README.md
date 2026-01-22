@@ -2,7 +2,8 @@
 
 ## 📖 Introduction
 
-SiYuan Image Studio is a lightweight image editing plugin designed for SiYuan Notes, allowing you to annotate, doodle, crop, flip, adjust tone, use AI retouching, and perform other operations on images directly within your notes without external tools.
+SiYuan Image Studio is a lightweight AI image editing plugin designed for SiYuan Notes, allowing you to annotate, doodle, crop, flip, adjust tone, use AI retouching, and perform other operations on images directly within your notes without external tools.The standout features are AI-powered smart editing and the ability to save as editable projects (supporting re-editing and sharing the editing state).
+![preview](https://b3logfile.com/file/2025/12/image-Xy3bg3n.png?imageView2/2/interlace/1/format/webp)
 
 ## ✨ Main Features
 
@@ -27,7 +28,9 @@ SiYuan Image Studio is a lightweight image editing plugin designed for SiYuan No
 - ​**Flip**: Horizontal/vertical image flipping
 - ​**Insert Image**: Overlay other images on current image
 - ​**Tone Adjustment**: Adjust image tone, brightness, saturation, etc.
+![Tone Adjustment](https://b3logfile.com/file/2026/01/PixPin_2026-01-18_17-21-05-ZMAlFCa.png?imageView2/2/interlace/1/format/webp)
 - ​**AI Retouch**: Perform AI-powered image retouching for even better results in some cases
+![AI Retouch](https://b3logfile.com/file/2026/01/PixPin_2026-01-21_16-28-16-PpXOHZb.png?imageView2/2/interlace/1/format/webp)
 
 ### 🛠️ Auxiliary Functions
 
@@ -37,6 +40,8 @@ SiYuan Image Studio is a lightweight image editing plugin designed for SiYuan No
 - ​**Multi-format Save**: Support PNG, JPG, WebP formats
 - ​**Image Compression**: Optional compression to reduce file size
 - ​**Copy to Clipboard**: Quickly copy editing results
+- Save/Load Project: Save as an editable project, allowing you to re-edit next time by loading the project file
+![](https://b3logfile.com/file/2025/12/image-krCHurE.png?imageView2/2/interlace/1/format/webp)
 
 ## 🚀 Quick Start
 
@@ -245,9 +250,13 @@ Configure in SiYuan Notes `Settings`​ → `Plugins`​ → `SiYuan Image Studi
 - Free users get **3 saves per day**
 - Upgrade to VIP to unlock:
 
-  - ✅ Unlimited usage
-  - ✅ Advanced AI image editing (coming soon)
-  - ✅ Batch image processing (coming soon)
+  - ✅ Unlimited Usage
+  - ✅ Advanced AI Retouching (Partially Released)
+  - ✅ Batch Image Processing (Coming Soon)
+  - ✅ Image Enhancement & Effects (Partially Released)
+  - ✅ Tool Support: Background Removal, Watermark Removal, OCR, etc. (Coming Soon)
+  - ✅ VIP Exclusive Channel: Priority technical support and prioritized feature requests
+  - ✅ Periodic Perks/Giveaways (Requires joining the QQ Group)
 
 #### How to Upgrade to VIP
 
