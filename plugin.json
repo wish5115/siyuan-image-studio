@@ -2,7 +2,7 @@
     "name": "siyuan-image-studio",
     "author": "Wilson",
     "url": "https://github.com/wish5115/siyuan-image-studio",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "minAppVersion": "3.0.12",
     "disabledInPublish": true,
     "backends": [
@@ -17,7 +17,7 @@
     },
     "description": {
         "default": "You can annotate and use AI edit images directly within SiYuan Note without relying on any third-party tools. It supports lines, arrows, rectangles, circles, mosaics, text (with custom fonts), brushes, numbered markers, stickers, image overlays, cropping, flipping, color adjustments, and AI retouching. The standout features are AI-powered smart editing and the ability to save as editable projects (supporting re-editing and sharing the editing state).",
-        "zh_CN": "可在思源笔记中直接对图片进行标注/AI编辑，而不需要依赖任何第三方，支持划线、箭头、矩形、圆形、马赛克、文字（可自定义字体）、画笔、数字序号、插入表情、插入图片、裁剪、翻转、色调调整、AI修图等操作。最大的亮点是AI智能修图和保存为可编辑的项目（支持再次编辑和分享编辑状态）。"
+        "zh_CN": "可在思源笔记中直接对图片进行标注/AI编辑，而不需要依赖任何第三方，支持划线、箭头、矩形、圆形、马赛克、文字（可自定义字体）、画笔、序号、插入表情/图片、裁剪翻转、色调调整、AI修图等。最大的亮点是AI智能修图和保存为可编辑的项目（支持再次编辑和共享编辑状态）。"
     },
     "readme": {
         "default": "README.md",
