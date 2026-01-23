@@ -221,5 +221,8 @@
   "Help": "帮助",
   "LD Token": "链滴Token",
   "When the image upload method is URL, this field must be filled in": "当图片上传方式是URL时，需要填写此字段",
-  "Binary File": "二进制文件"
+  "Binary File": "二进制文件",
+  "API Request Type": "API请求方式",
+  "JSON": "JSON",
+  "FormData": "FormData"
 }

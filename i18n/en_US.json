@@ -221,5 +221,8 @@
   "Help": "Help",
   "LD Token": "LD Token",
   "When the image upload method is URL, this field must be filled in": "When the image upload method is URL, this field must be filled in",
-  "Binary File": "Binary File"
+  "Binary File": "Binary File",
+  "API Request Type": "API Request Type",
+  "JSON": "JSON",
+  "FormData": "FormData"
 }

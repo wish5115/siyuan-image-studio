@@ -26,9 +26,10 @@ const defaultConfig = {
     aiUrl: '', // AI API URL
     aiApiKey: '', // AI API Key
     aiModel: '', // AI Model
-    aiSystemPrompt: '你是一个专业的图像编辑助手，请根据用户的要求修改图片，保持图片的原始尺寸风格和内容，仅做必要的修改，不需要解释，直接返回修改后的图片。', // AI系统提示词
+    aiSystemPrompt: '你是一个专业的图像编辑助手，请根据用户的要求修改图片，保持图片的原始尺寸风格和内容，仅做必要的修改，不需要解释，直接返回修改后的图片。注意：输入图片可能包含为了保持长宽比而添加的黑色背景填充，请忽略这些边缘填充区域，只对画面中间的有效内容进行编辑。生成的图片不要包含水印！！！', // AI系统提示词
     aiOtherParams: '{"size":"1024x1024"}', // AI API其他参数
     aiApiFormat: 'url',
+    aiApiReqType: 'json', // AI API请求方式
     aiLdToken: '',
     aiModelList: [],
     currentModelName: '',
@@ -70,6 +71,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             aiSystemPrompt: this.data[STORAGE_NAME].aiSystemPrompt,
             aiOtherParams: this.data[STORAGE_NAME].aiOtherParams,
             aiApiFormat: this.data[STORAGE_NAME].aiApiFormat,
+            aiApiReqType: this.data[STORAGE_NAME].aiApiReqType,
             aiLdToken: this.data[STORAGE_NAME].aiLdToken,
             aiModelList: this.data[STORAGE_NAME].aiModelList,
             currentModelName: this.data[STORAGE_NAME].currentModelName,
@@ -114,6 +116,7 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
         this.data[STORAGE_NAME] = {...defaultConfig, ...(await this.loadData(STORAGE_NAME))};
        this.data[STORAGE_NAME].aiSystemPrompt = this.data[STORAGE_NAME].aiSystemPrompt || defaultConfig.aiSystemPrompt;
        this.data[STORAGE_NAME].aiApiFormat = this.data[STORAGE_NAME].aiApiFormat || defaultConfig.aiApiFormat;
+       this.data[STORAGE_NAME].aiApiReqType = this.data[STORAGE_NAME].aiApiReqType || defaultConfig.aiApiReqType;
         this.setting = new Setting({
             confirmCallback: async () => {
                 const shortcutInput = this.setting.dialog.element.querySelector("input[name=shortcut]");
