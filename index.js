@@ -33,12 +33,14 @@ const defaultConfig = {
     aiLdToken: '',
     aiModelList: [],
     currentModelName: '',
+    aiImagePath: '',
+    aiNote: '',
 };
 
 // true 调试 false 生产
 const isDebug = false;
 // 当前版本
-const version = '1.0.7';
+const version = '1.0.8';
 
 module.exports = class SiYuanImageStudioPlugin extends Plugin {
     async onload() {
@@ -75,6 +77,8 @@ module.exports = class SiYuanImageStudioPlugin extends Plugin {
             aiLdToken: this.data[STORAGE_NAME].aiLdToken,
             aiModelList: this.data[STORAGE_NAME].aiModelList,
             currentModelName: this.data[STORAGE_NAME].currentModelName,
+            aiImagePath: this.data[STORAGE_NAME].aiImagePath,
+            aiNote: this.data[STORAGE_NAME].aiNote,
             i18n: this.i18n,
             isMobile: this.isMobile,
             isDebug: isDebug,
